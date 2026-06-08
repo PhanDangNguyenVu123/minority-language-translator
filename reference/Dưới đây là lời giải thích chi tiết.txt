@@ -1,0 +1,54 @@
+Dưới đây là lời giải thích chi tiết về luồng hoạt động của chức năng Dịch Hình Ảnh và cách mà file ocr.py xử lý dữ liệu.
+
+1. Tổng quan luồng hoạt động (Architecture Flow)
+Chức năng này đi qua 4 bước chính, luân chuyển từ Giao diện (Frontend) -> Backend Java -> Backend Python -> Giao diện:
+
+Frontend (React):
+Khi bạn kéo thả một bức ảnh vào, Frontend sẽ lấy file ảnh đó, cùng với thông tin ngôn ngữ nguồn (ví dụ: tiếng Việt) và ngôn ngữ đích (ví dụ: Ba Na), đóng gói thành một đối tượng FormData.
+Gửi một yêu cầu POST tới API /api/ocr của Java Backend.
+Java Backend (Spring Boot):
+Đóng vai trò như một trạm trung chuyển. Nó nhận file ảnh (dưới dạng MultipartFile), lấy ra mảng byte của ảnh và tiếp tục forward (chuyển tiếp) tới dịch vụ Python thông qua API nội bộ /internal/ocr.
+Python Inference (FastAPI + Tesseract):
+Đây là nơi xử lý "nặng" nhất. Nó nhận file ảnh, dùng mô hình AI (Tesseract) để quét (scan) ra chữ và tọa độ của chữ trên bức ảnh.
+Sau đó, nó dịch đoạn chữ đó và trả về một bản đồ cấu trúc JSON gồm: chữ gốc, chữ đã dịch, x, y, chiều rộng, chiều cao.
+Frontend (Hiển thị):
+Nhận cục dữ liệu JSON từ Python (thông qua Java).
+React sẽ vẽ bức ảnh gốc ra màn hình, sau đó dùng CSS position: absolute để tạo ra các hộp (div) chứa chữ đã dịch và đặt lên đúng tọa độ (x, y) đè lên bức ảnh gốc. Kết quả là bạn thấy chữ dịch "thay thế" chữ trên ảnh.
+2. File ocr.py hoạt động như thế nào?
+File ocr.py là "trái tim" của chức năng này. Thay vì chỉ đọc chữ ra một đoạn văn bản thô (như cách dùng hàm image_to_string), chúng ta phải dùng hàm image_to_data để lấy được vị trí của chữ.
+
+Cụ thể các bước trong hàm process_image:
+
+Bước 1: Chuyển đổi mã ngôn ngữ và Đọc ảnh
+
+python
+tess_lang = 'vie' if source_lang == 'vi' else 'eng'
+image = Image.open(BytesIO(image_bytes))
+Tesseract dùng mã ngôn ngữ riêng (ví dụ vie cho tiếng Việt). Đoạn code này ánh xạ mã ngôn ngữ và dùng thư viện Pillow để mở ảnh từ mảng byte truyền vào.
+
+Bước 2: Quét ảnh bằng Tesseract
+
+python
+data = pytesseract.image_to_data(image, lang=tess_lang, output_type=Output.DICT)
+Hàm image_to_data trả về một Dictionary chứa danh sách từng từ (word) một trên ảnh. Nó chứa các mảng song song nhau như: text (nội dung từ), left (tọa độ x), top (tọa độ y), width (chiều rộng), block_num, par_num, line_num...
+
+Bước 3: Gom nhóm các từ thành Từng dòng (Line Grouping) Vì Tesseract nhận diện từng từ rời rạc (ví dụ: "Xin", "chào", "bạn"), nếu ta mang từng từ đi dịch thì ngữ pháp sẽ cực kỳ tệ. Ta cần phải gom chúng lại thành từng dòng hoàn chỉnh.
+
+python
+key = (block_num, par_num, line_num)
+Chìa khóa ở đây là thuộc tính line_num (số thứ tự dòng) do Tesseract cung cấp. Các từ nào có chung block_num, par_num và line_num nghĩa là chúng nằm trên cùng 1 dòng.
+
+Thuật toán sẽ duyệt qua từng từ:
+
+Nếu dòng này (key) chưa tồn tại: Tạo mới một dòng với tọa độ ban đầu chính là tọa độ của từ đầu tiên.
+Nếu dòng này đã tồn tại: Nối thêm từ vào cuối câu. Đồng thời, kéo dãn tọa độ bao quanh (Bounding Box) của cả dòng ra (cập nhật right lớn nhất, bottom lớn nhất).
+Bước 4: Dịch thuật và Trả về
+
+python
+original_text = ' '.join(line['text']).strip()
+translated_text = translate(original_text, source_lang, target_lang)
+Sau khi đã gom được từng dòng hoàn chỉnh kèm theo tọa độ bao trùm cả dòng đó. Code sẽ:
+
+Nối các từ lại tạo thành câu gốc hoàn chỉnh (original_text).
+Đưa vào hàm translate() (vốn đang được dùng cho chức năng dịch văn bản bình thường) để lấy translated_text.
+Tính toán lại chiều rộng (width = right - x), chiều cao (height = bottom - y) và lưu vào danh sách results để gửi về cho Frontend vẽ lên màn hình.

@@ -1,0 +1,6 @@
+- [x] Cài đặt thư viện `underthesea` trong dự án Python inference.
+- [x] Xây dựng module `segmenter.py` (Tách câu thành Anchors và Chunks dựa trên từ điển).
+- [x] Viết script `prepare_colab_data.py` để trích xuất dữ liệu Chunks từ thư mục `dataset`.
+- [x] Soạn kịch bản (Notebook) hướng dẫn huấn luyện `BN-BARTpho` trên Google Colab.
+- [x] Cập nhật module `translator.py` tích hợp Segmenter và Inference.
+- [/] Hướng dẫn người dùng gắn mô hình đã huấn luyện vào mã nguồn và chạy thử nghiệm.

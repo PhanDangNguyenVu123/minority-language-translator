@@ -1,0 +1,5 @@
+- [x] Xây dựng thuật toán Segmenter cho tiếng Ba Na (Greedy Matching).
+- [x] Cập nhật file hướng dẫn Colab cho chiều Ba Na ➡️ Việt.
+- [x] Tích hợp 2 mô hình (best-bana-model và best-vi-model) vào `translator.py` tải song song vào RAM.
+- [/] Cập nhật logic dịch ngược trong `translator.py`.
+- [ ] Hướng dẫn người dùng huấn luyện trên Colab và tải mô hình về.

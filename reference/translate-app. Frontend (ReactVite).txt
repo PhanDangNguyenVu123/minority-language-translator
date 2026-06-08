@@ -1,0 +1,63 @@
+ translate-app.: Frontend (React/Vite) -> Backend API (Java Spring Boot) -> Inference Model (Python FastAPI).
+
+1. Khởi chạy và Build Frontend (React/Vite):Di chuyển vào thư mục frontend.
+Cài đặt thư viện (npm install) và build mã nguồn (npm run build).
+
+2. Khởi chạy Backend Inference (Python FastAPI):
+Di chuyển vào thư mục python-inference.
+Cần tạo môi trường ảo ảo (virtual environment) và cài các thư viện cần thiết (mình thấy thư mục hiện tại chưa có thư mục .venv). Các lệnh bổ sung sẽ là:
+powershell
+
+python -m venv .venv
+.\.venv\Scripts\activate
+pip install -r requirements.txt
+
+Sau đó chạy server FastAPI ở cổng 8001:
+powershell
+
+.\.venv\Scripts\uvicorn app.main:app --host 127.0.0.1 --port 8001
+
+3. Khởi chạy Backend API (Java Spring Boot):
+
+Di chuyển vào thư mục backend-java.
+Sử dụng Maven để chạy ứng dụng:
+powershell
+
+mvn -f pom.xml spring-boot:run -DskipTests
+
+Ứng dụng Spring Boot sẽ chạy ở cổng 8080. Lúc này có thể truy cập http://localhost:8080/ để xem giao diện web và sử dụng API.
+
+1. Khởi động AI Backend (Python FastAPI) Bạn mở Terminal thứ nhất và chạy các lệnh:
+
+powershell
+
+cd python-inference
+.\.venv\Scripts\activate
+uvicorn app.main:app --host 127.0.0.1 --port 8001
+
+2. Khởi động Web Backend (Java Spring Boot) Bạn mở Terminal thứ hai (tách biệt với cái đầu) và chạy:
+
+powershell
+cd backend-java
+mvn spring-boot:run -DskipTests
+
+Bước 1: Cài đặt và Build Frontend (Giao diện React/Vite)
+cd frontend
+npm install  : chỉ chạy khi có sự thay đổi thư viện trong file package.json
+npm run build :Chỉ chạy khi có cập nhật giao diện UI
+
+Bước 2: Khởi động Python FastAPI (Dịch vụ Backend AI/Inference)
+cd python-inference
+.\.venv\Scripts\python.exe -m uvicorn app.main:app --host 127.0.0.1 --port 8001 : Bắt buộc
+
+
+Bước 3: Khởi động Java Spring Boot (Dịch vụ Backend Chính)
+cd backend-java
+mvn -f pom.xml spring-boot:run -DskipTests : Bắt buộc
+
+3. Khởi động Frontend Web - (Tại thư mục frontend)
+
+powershell
+npm run dev
+
+Kết quả: Toàn bộ dự án hiện đã khởi động thành công. Bạn có thể mở trình duyệt và truy cập vào địa chỉ: http://127.0.0.1:8080/

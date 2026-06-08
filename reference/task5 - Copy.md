@@ -1,0 +1,33 @@
+# Implementation Tasks: User Accounts, Database & Feedback
+
+- `[x]` **Backend: Configuration & Dependencies**
+  - `[x]` Add MySQL, Spring Data JPA, Spring Security, and JWT dependencies to `pom.xml`.
+  - `[x]` Configure `application.properties` for MySQL connection.
+- `[x]` **Backend: Entities & Repositories**
+  - `[x]` Create `User` entity.
+  - `[x]` Create `TranslationHistory` entity.
+  - `[x]` Create `Favorite` entity.
+  - `[x]` Create `TranslationEdit` entity.
+  - `[x]` Create `TranslationVote` entity.
+  - `[x]` Create Repositories for all entities.
+- `[x]` **Backend: Security & JWT Implementation**
+  - `[x]` Implement JWT Utility class (generate, validate tokens).
+  - `[x]` Configure Spring Security (FilterChain, AuthenticationManager).
+  - `[x]` Implement CustomUserDetailsService.
+- `[x]` **Backend: Services & Controllers**
+  - `[x]` Implement `AuthController` (Login, Register).
+  - `[x]` Implement `SyncController` (`/api/sync-guest-data`).
+  - `[x]` Implement `FeedbackController` (Edit & Vote endpoints).
+  - `[x]` Update `HistoryController` and `FavoriteController` (if existing) or create them.
+- `[x]` **Frontend: Authentication & State Management**
+  - `[x]` Create `AuthContext` to manage user state globally.
+  - `[x]` Build Login / Register UI components (Modals/Pages).
+  - `[x]` Implement axios interceptor to attach JWT token.
+- `[x]` **Frontend: Data Synchronization**
+  - `[x]` Implement logic to push `localStorage` data to `/api/sync-guest-data` upon login.
+  - `[x]` Update existing History/Favorite hooks to fetch from API when logged in.
+- `[x]` **Frontend: Translation Feedback UI**
+  - `[x]` Add "Edit" and "Voting Translation" buttons to the translation result box.
+  - `[x]` Implement "Edit Translation" dialog.
+  - `[x]` Integrate Edit and Vote API calls.
+  - `[x]` Handle "Guest" state for Edit/Vote (prompt to login).

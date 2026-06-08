@@ -1,0 +1,20 @@
+2. Quy trình "Ai gọi ai" trong hệ thống của bạn?
+Hệ thống của bạn có 3 lớp (Frontend -> Java -> Python). Quy trình gọi diễn ra như sau:
+
+1 Người dùng (End-User): Bấm nút "Dịch" trên giao diện Web (React/HTML).
+2 Web Frontend: Gửi một yêu cầu API (chứa văn bản cần dịch và mã ngôn ngữ bana-vi) xuống backend Java Spring Boot.
+3 Java Spring Boot: Nhận yêu cầu, nhưng Java không xử lý AI được. Do đó, Java đóng vai trò làm "Người đưa thư", gói đoạn văn bản đó lại và gọi API truyền sang cho Python FastAPI đang chạy ngầm (ở cổng 8000).
+4 Python FastAPI (main.py): Tiếp nhận yêu cầu. Nó sẽ gọi hàm translate() trong file translator.py.
+5 ModelManager (trong translator.py): Đây là nơi trực tiếp gọi mô hình. Nó sẽ nhìn vào thư mục models/best-banatovn-model để load các trọng số AI lên RAM.
+6 Mô hình AI: Đọc tiếng Ba Na, xử lý và nhả ra kết quả tiếng Việt.
+7 Cuối cùng, kết quả tiếng Việt được truyền ngược lại: Python -> Java -> Giao diện Web để hiển thị cho người dùng.
+Vì vậy, translator.py (cụ thể là ModelManager) chính là "Người gác cổng" quản lý các thư mục model của bạn!
+
+Bài báo khoa học sử dụng kỹ thuật Chunking Translation (Dịch theo cụm từ) kết hợp giữa từ điển và mô hình AI NMT (Neural Machine Translation) có tên là BN-BARTpho.
+
+Kế hoạch này trải qua 4 bước cơ bản:
+
+Tiền xử lý (Segmentation): Tách câu tiếng Việt thành các phần neo (Anchors) và cụm từ (Chunks).
+Huấn luyện mô hình (BN-BARTpho Fine-tuning): Dùng dữ liệu trong parallel_corpus để dạy mô hình dịch các Chunks.
+Tích hợp: Đưa toàn bộ pipeline vào trong API Python FastAPI (translator.py) của bạn.
+Nâng cấp UI (Tuỳ chọn).

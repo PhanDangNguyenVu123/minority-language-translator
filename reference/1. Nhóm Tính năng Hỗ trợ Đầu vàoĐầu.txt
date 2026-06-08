@@ -1,0 +1,31 @@
+1. Nhóm Tính năng Hỗ trợ Đầu vào/Đầu ra (I/O Features)
+Hiện tại bạn chỉ mới có nhập văn bản (Text-to-Text). Các trang web lớn đều hỗ trợ đa dạng hơn:
+
+Dịch bằng Giọng nói (Speech-to-Text) & Đọc văn bản (Text-to-Speech): Cho phép người dùng đọc vào micro thay vì gõ, và nghe cách phát âm của bản dịch.
+
+Tham khảo: Google Translate, Microsoft Translator.
+
+Dịch Hình ảnh / Camera (OCR Translation): Người dùng chụp một bảng hiệu hoặc trang sách tiếng dân tộc, AI sẽ nhận diện chữ (OCR) và dịch thẳng trên ảnh.
+
+Tham khảo: Google Translate (Mobile App), Naver Papago.
+
+Dịch Tài liệu (Document Translation): Cho phép upload file .docx, .pdf, .txt và trả về một file đã dịch nhưng vẫn giữ nguyên định dạng bố cục.
+
+Tham khảo: DeepL (Đây là trang web làm tính năng này tốt nhất thế giới hiện nay).
+
+Bàn phím Ảo (Virtual Keyboard): (Cực kỳ quan trọng với dự án của bạn!) Tiếng Khmer có hệ chữ cái tượng hình riêng, tiếng Ê-đê có các ký tự Latinh móc/dấu đặc biệt (như č, ñ, ƀ). Bàn phím máy tính thông thường rất khó gõ. Tích hợp một bàn phím ảo nhỏ trên màn hình sẽ là điểm cộng cực lớn.
+
+Tham khảo: Google Translate (Nhấn vào icon bàn phím nhỏ ở góc dưới khung nhập liệu).
+
+2. Nhóm Tính năng Trải nghiệm & Học tập (UX & Learning)
+
+
+Chế độ Hội thoại (Conversation Mode): Chia đôi màn hình, một nửa tiếng Việt, một nửa tiếng đồng bào. Mỗi người bấm nút micro ở nửa màn hình của mình để nói chuyện trực tiếp.
+
+Tham khảo: Naver Papago (Giao diện hội thoại của app này cực kỳ mượt mà và trực quan).
+
+Lịch sử & Lưu mục yêu thích (History & Favorites/Phrasebook): Lưu lại những cụm từ thường dùng để mở ra xem nhanh mà không cần có mạng.
+
+Tham khảo: Google Translate (Chức năng "Đã lưu" có hình ngôi sao).
+
+Đánh giá bản dịch (Feedback/Rate): Nút Like/Dislike (👍/👎) hoặc cho phép người dùng gợi ý bản dịch tốt hơn. Điều này giúp bạn thu thập lại dữ liệu để train mô hình cho các phiên bản sau.

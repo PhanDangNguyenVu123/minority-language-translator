@@ -1,0 +1,8 @@
+- [x] Create `VirtualKeyboard.tsx` component with layouts for Bana, Ede, and Khmer.
+- [x] Update `App.tsx` to integrate the virtual keyboard.
+    - [x] Add Khmer (`km`) to language options.
+    - [x] Add state for showing/hiding keyboard.
+    - [x] Add keyboard toggle button.
+    - [x] Synchronize input between virtual keyboard and textarea.
+- [x] Update `App.css` for keyboard styling and glassmorphism effect.
+- [x] Verify functionality across all three languages.
